@@ -5,7 +5,6 @@ import com.example.matawantest.repository.PlayerRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PlayerService {
@@ -15,7 +14,7 @@ public class PlayerService {
         this.playerRepository = playerRepository;
     }
 
-    public Optional<Player> findById(int id) {
+    public Player findById(Long id) {
         return this.playerRepository.findById(id);
     }
 
@@ -31,7 +30,7 @@ public class PlayerService {
         this.playerRepository.delete(player);
     }
 
-    public List<Player> findByName(String name) {
+    public Player findByName(String name) {
         return this.playerRepository.findByName(name);
     }
 }
