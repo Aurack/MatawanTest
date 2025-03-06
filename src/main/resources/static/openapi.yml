@@ -1,0 +1,209 @@
+openapi: 3.0.1
+info:
+  title: Team API
+  description: API REST de gestion des équipes et joueurs
+  version: "1.0.0"
+servers:
+  - url: http://localhost:8080
+paths:
+  /api/team:
+    get:
+      summary: Get all teams
+      responses:
+        '200':
+          description: List of teams
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Team'
+
+    post:
+      summary: Create a new team
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Team'
+            examples:
+              teamExample:
+                summary: Example of a team
+                value:
+                  name: "Les Lions"
+                  acronym: "LIO"
+                  budget: 1500000
+                  players:
+                    - name: "Jean Dupont"
+                      position: "Attaquant"
+                    - name: "Pierre Martin"
+                      position: "Défenseur"
+      responses:
+        '201':
+          description: Team created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team'
+        '400':
+          description: Bad Request
+
+    put:
+      summary: Update an existing team
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Team'
+            examples:
+              updatedTeamExample:
+                summary: Example of an updated team
+                value:
+                  id: 1
+                  name: "Les Tigres"
+                  acronym: "TGR"
+                  budget: 2000000
+                  players:
+                    - name: "Alice Dupont"
+                      position: "Milieu"
+                    - name: "Bob Martin"
+                      position: "Gardien"
+      responses:
+        '200':
+          description: Team updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team'
+        '404':
+          description: Team not found
+
+    delete:
+      summary: Delete a team
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Team'
+      responses:
+        '200':
+          description: Team deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team'
+
+  /api/team/{id}:
+    get:
+      summary: Get a team by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Team found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team'
+        '404':
+          description: Team not found
+
+  /api/team/name/{name}:
+    get:
+      summary: Get a team by name
+      parameters:
+        - in: path
+          name: name
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Team found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team'
+        '404':
+          description: Team not found
+
+  /api/team/paged:
+    get:
+      summary: Get paginated and sorted teams
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+          default: 0
+        - in: query
+          name: size
+          schema:
+            type: integer
+          default: 10
+        - in: query
+          name: sortBy
+          schema:
+            type: string
+          default: name
+        - in: query
+          name: direction
+          schema:
+            type: string
+          default: asc
+      responses:
+        '200':
+          description: Paginated list of teams
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  content:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Team'
+                  totalElements:
+                    type: integer
+                  totalPages:
+                    type: integer
+                  number:
+                    type: integer
+                  size:
+                    type: integer
+
+components:
+  schemas:
+    Team:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        acronym:
+          type: string
+          pattern: '[A-Z0-9]*'
+        budget:
+          type: number
+          format: double
+        players:
+          type: array
+          items:
+            $ref: '#/components/schemas/Player'
+    Player:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        position:
+          type: string
