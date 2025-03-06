@@ -60,3 +60,4 @@ And the API documentation here:
 
 ## 📞 Contacts
 If you have any questions regarding the API or its installation you can contact me at the following address: thomas.bonin06@gmail.com
+The project took me around 10h
