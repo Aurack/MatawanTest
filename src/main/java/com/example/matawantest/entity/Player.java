@@ -1,16 +1,22 @@
 package com.example.matawantest.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import jakarta.validation.constraints.NotNull;
 
+/**
+ * The Player model
+ */
 @Entity
+@Table(
+        name = "player",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"name", "position"})
+)
 @Getter
 @Setter
 @NoArgsConstructor
@@ -25,4 +31,9 @@ public class Player {
 
     @NotNull
     private String position;
+
+    @ManyToOne
+    @JoinColumn(name = "team_id")
+    @JsonBackReference
+    private Team team;
 }

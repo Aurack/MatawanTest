@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"com.example.matawantest"},{"l":"com.example.matawantest.controller"},{"l":"com.example.matawantest.entity"},{"l":"com.example.matawantest.repository"},{"l":"com.example.matawantest.service"}];updateSearchResults();
