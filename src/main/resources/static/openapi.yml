@@ -1,13 +1,15 @@
 openapi: 3.0.1
 info:
   title: Team API
-  description: API REST de gestion des équipes et joueurs
+  description: REST API to manage football teams and their players
   version: "1.0.0"
 servers:
   - url: http://localhost:8080
 paths:
   /api/team:
     get:
+      tags:
+        - Team
       summary: Get all teams
       responses:
         '200':
@@ -20,6 +22,8 @@ paths:
                   $ref: '#/components/schemas/Team'
 
     post:
+      tags:
+        - Team
       summary: Create a new team
       requestBody:
         required: true
@@ -50,6 +54,8 @@ paths:
           description: Bad Request
 
     put:
+      tags:
+        - Team
       summary: Update an existing team
       requestBody:
         required: true
@@ -81,6 +87,8 @@ paths:
           description: Team not found
 
     delete:
+      tags:
+        - Team
       summary: Delete a team
       requestBody:
         required: true
@@ -98,6 +106,8 @@ paths:
 
   /api/team/{id}:
     get:
+      tags:
+        - Team
       summary: Get a team by ID
       parameters:
         - in: path
@@ -117,6 +127,8 @@ paths:
 
   /api/team/name/{name}:
     get:
+      tags:
+        - Team
       summary: Get a team by name
       parameters:
         - in: path
@@ -136,6 +148,8 @@ paths:
 
   /api/team/paged:
     get:
+      tags:
+        - Team
       summary: Get paginated and sorted teams
       parameters:
         - in: query
@@ -179,6 +193,95 @@ paths:
                   size:
                     type: integer
 
+  /api/player:
+    get:
+      summary: Get all players
+      tags:
+        - Player
+      responses:
+        '200':
+          description: List of all players
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Player'
+    post:
+      summary: Create or update a player
+      tags:
+        - Player
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Player'
+      responses:
+        '201':
+          description: Player created or updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Player'
+        '404':
+          description: Player not found
+    delete:
+      summary: Delete a player
+      tags:
+        - Player
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Player'
+      responses:
+        '200':
+          description: Player deleted
+  /api/player/{id}:
+    get:
+      summary: Get player by ID
+      tags:
+        - Player
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: The ID of the player
+      responses:
+        '200':
+          description: Player found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Player'
+        '404':
+          description: Player not found
+  /api/player/name/{name}:
+    get:
+      summary: Get player by name
+      tags:
+        - Player
+      parameters:
+        - in: path
+          name: name
+          required: true
+          schema:
+            type: string
+          description: The name of the player
+      responses:
+        '200':
+          description: Player found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Player'
+        '404':
+          description: Player not found
+
 components:
   schemas:
     Team:
@@ -203,6 +306,7 @@ components:
       properties:
         id:
           type: integer
+          format: int64
         name:
           type: string
         position:
